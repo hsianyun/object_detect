@@ -20,7 +20,7 @@ class ObjectDetection:
 
     def load_model(self):
        
-        model = YOLO("can_detect.pt")  # load a pretrained YOLOv8n model
+        model = YOLO("can_detect_n.pt")  # load a pretrained YOLOv8n model
         model.fuse()
     
         return model
@@ -41,6 +41,7 @@ class ObjectDetection:
 
         #warmup 
         sleep(0.1)
+        count = 0
       
         while True:
           
@@ -49,21 +50,25 @@ class ObjectDetection:
             frame = camera.capture_array()
             # print(frame)
             results = self.predict(frame)
-            frame = results[0].plot()
+            # frame = results[0].plot()
             print(results[0].boxes.xyxyn)
             
             end_time = time()
             fps = 1/np.round(end_time - start_time, 2)
-             
-            cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
-            
-            cv2.imshow('YOLOv8 Detection', frame)
- 
-            if cv2.waitKey(5) & 0xFF == 27:
-                
+            print(f'FPS: {fps}')
+
+            count += 1 
+            if count > 50:
                 break
+            # cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
+            
+            # cv2.imshow('YOLOv8 Detection', frame)
+ 
+            # if cv2.waitKey(5) & 0xFF == 27:
+                
+            #     break
         
-        cv2.destroyAllWindows()
+        # cv2.destroyAllWindows()
 
 detection = ObjectDetection()
 detection()
