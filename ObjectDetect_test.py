@@ -17,15 +17,13 @@ class actions(IntEnum):
 
 class ObjectDetection:
 
-    def __init__(self, ser: serialInterface):
+    def __init__(self):
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.ser = ser
+        # self.ser = ser
         print("Using Device: ", self.device)
 
         self.model = self.load_model()
-
-        self.CLASS_NAMES_DICT = self.model.model.names
 
     def load_model(self):
 
@@ -52,15 +50,15 @@ class ObjectDetection:
         return area
 
     def direction(self, cor_x: float, cor_y: float, area: float):
-        if 0 <= cor_x < 0.47:
+        if 0 <= cor_x < 0.45:
             print('turn left')
             dir = actions.LEFT
-        elif 0.53 <= cor_x <= 1:
+        elif 0.55 <= cor_x <= 1:
             print('turn right')
             dir = actions.RIGHT
-        elif 0.47 <= cor_x < 0.53:
+        elif 0.45 <= cor_x < 0.55:
             print('go forward or throw ball')
-            if area >= 0.25:
+            if area > 0.25:
                 print('throw ball')
                 dir = actions.THROW
             else:
@@ -98,20 +96,20 @@ class ObjectDetection:
                 # if the ball is throwed, notThrow = False
                 action = self.direction(center_x, center_y, area)
                 if action == actions.THROW:
-                    self.ser.SerialWriteString('e')
+                    #     # self.ser.SerialWriteString('e')
                     notThrow = False
-                elif action == actions.FRONT:
-                    self.ser.SerialWriteString('f')
-                elif action == actions.LEFT:
-                    self.ser.SerialWriteString('l')
-                elif action == actions.RIGHT:
-                    self.ser.SerialWriteString('r')
+                # elif action == actions.FRONT:
+                #     self.ser.SerialWriteString('f')
+                # elif action == actions.LEFT:
+                #     self.ser.SerialWriteString('l')
+                # elif action == actions.RIGHT:
+                #     self.ser.SerialWriteString('r')
                 print(f'x:{center_x:.2f} y:{center_y:.2f} Area:{area:.4f}')
 
             # if there is no object been detected
             else:
-                self.ser.SerialWriteString('r')
-                print('Turn right')
+                # self.ser.SerialWriteString('r')
+                print('NOt found. Turn right')
 
             end_time = time()
             fps = 1/np.round(end_time - start_time, 2)
