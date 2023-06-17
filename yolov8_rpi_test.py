@@ -36,7 +36,6 @@ class ObjectDetection:
 
         camera = Picamera2()
         camera.configure(camera.create_preview_configuration(main={"format": 'RGB888', "size": (640,480)}))
-        # camera.configure()
         camera.start()
 
         #warmup 
@@ -60,15 +59,15 @@ class ObjectDetection:
             count += 1 
             if count > 50:
                 break
-            # cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
+            cv2.putText(frame, f'FPS: {int(fps)}', (20,70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
             
-            # cv2.imshow('YOLOv8 Detection', frame)
+            cv2.imshow('YOLOv8 Detection', frame)
  
-            # if cv2.waitKey(5) & 0xFF == 27:
+            if cv2.waitKey(5) & 0xFF == 27:
                 
-            #     break
+                break
         
-        # cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
 
 detection = ObjectDetection()
 detection()

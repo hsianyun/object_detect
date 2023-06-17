@@ -6,7 +6,7 @@ from time import sleep
 class serialInterface:
     def __init__(self):
         self.ser = serial.Serial()
-        self.port = '/dev/ttyACM0',
+        self.port = '/dev/ttyACM0'
         self.do_connect(self.port)
         self.ser.reset_input_buffer()
 
